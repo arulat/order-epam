@@ -42,7 +42,7 @@ public class OrderController {
   @GetMapping
   public PagedResponse<OrderResponse> listOrders(
       @RequestParam(defaultValue = "1") @Min(1) int page,
-      @RequestParam(defaultValue = "20") @Min(1) @Max(100) int limit,
+      @RequestParam(defaultValue = "10") @Min(1) @Max(100) int limit,
       @RequestParam(required = false) OrderStatus status,
       @RequestParam(required = false) @Positive BigDecimal minAmount,
       @RequestParam(required = false) @Positive BigDecimal maxAmount,

@@ -91,11 +91,11 @@ class OrderControllerTests {
   void listOrders_defaultPagination_returnsMeta() throws Exception {
     mockMvc.perform(get("/orders"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.items", hasSize(20)))
+        .andExpect(jsonPath("$.items", hasSize(10)))
         .andExpect(jsonPath("$.page", is(1)))
-        .andExpect(jsonPath("$.limit", is(20)))
+        .andExpect(jsonPath("$.limit", is(10)))
         .andExpect(jsonPath("$.totalItems", is(25)))
-        .andExpect(jsonPath("$.totalPages", is(2)));
+        .andExpect(jsonPath("$.totalPages", is(3)));
   }
 
   @Test
@@ -199,6 +199,18 @@ class OrderControllerTests {
     mockMvc.perform(get("/orders")
         .param("limit", "0"))
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void listOrders_emptyResult_returnsEmptyPage() throws Exception {
+    mockMvc.perform(get("/orders")
+        .param("status", "PAID")
+        .param("minAmount", "999"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.items", hasSize(0)))
+        .andExpect(jsonPath("$.page", is(1)))
+        .andExpect(jsonPath("$.totalItems", is(0)))
+        .andExpect(jsonPath("$.totalPages", is(0)));
   }
 
   private List<Order> seedOrders() {
