@@ -9,7 +9,6 @@ import com.example.demo.repo.OrderRepository;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -83,7 +82,8 @@ public class OrderService {
     if (dateFrom != null && dateTo != null && dateFrom.isAfter(dateTo)) {
       throw new IllegalArgumentException("dateFrom must be <= dateTo");
     }
-    if (Objects.equals(minAmount, BigDecimal.ZERO) || Objects.equals(maxAmount, BigDecimal.ZERO)) {
+    if ((minAmount != null && minAmount.compareTo(BigDecimal.ZERO) == 0)
+        || (maxAmount != null && maxAmount.compareTo(BigDecimal.ZERO) == 0)) {
       throw new IllegalArgumentException("amount filters must be > 0");
     }
   }
